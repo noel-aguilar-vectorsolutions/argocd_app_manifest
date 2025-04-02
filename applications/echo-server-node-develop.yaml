@@ -1,0 +1,37 @@
+#https://argo-cd.readthedocs.io/en/latest/user-guide/application-specification/
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: 'echo-server-node-develop'
+  namespace: argocd
+spec:
+  project: default
+
+  # Source of the application manifests
+  source:
+    repoURL: git@github.com:VectorLearning/poc_echo_server_node.git
+    targetRevision: feat/argocd-demo
+    path: './src/helm/echo-server-node'
+    # Helm specific config
+    helm:
+      passCredentials: false
+      releaseName: develop
+      parameters:
+        - name: 'image.tag'
+          value: '0.1.0.249-preview'
+      valueFiles:
+        - values-dev.yaml
+      
+
+  # Destination cluster and namespace to deploy the application
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: develop
+  
+  # Sync policy
+  syncPolicy:
+    automated: #enables auto-sync
+      prune: true
+      selfHeal: false
+
+  
