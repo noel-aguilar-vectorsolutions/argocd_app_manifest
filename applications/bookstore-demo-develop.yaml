@@ -1,0 +1,32 @@
+#https://argo-cd.readthedocs.io/en/latest/user-guide/application-specification/
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: 'bookstore-demo-develop'
+  namespace: argocd
+spec:
+  project: default
+
+  # Source of the application manifests
+  source:
+    repoURL: git@github.com:VectorLearning/Architecture-Testing.git
+    targetRevision: ci_demo_setup
+    path: './devops/helm'
+    # Helm specific config
+    helm:
+      releaseName: develop
+      valueFiles:
+        - develop-values.yaml
+
+  # Destination cluster and namespace to deploy the application
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: develop
+  
+  # Sync policy
+  syncPolicy:
+    automated: #enables auto-sync
+      prune: true
+      selfHeal: false
+
+  
