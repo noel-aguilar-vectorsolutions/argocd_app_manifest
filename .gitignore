@@ -1,0 +1,4 @@
+.vscode
+tmp/
+backup/
+target/
