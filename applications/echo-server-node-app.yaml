@@ -6,32 +6,49 @@ metadata:
   namespace: argocd
 spec:
   project: default
-
   # Source of the application manifests
   source:
     repoURL: git@github.com:VectorLearning/poc_echo_server_node.git
-    targetRevision: feat/argocd-demo
+    targetRevision: main
     path: './src/helm/echo-server-node'
     # Helm specific config
     helm:
       passCredentials: false
       releaseName: develop
-      parameters:
-        - name: 'image.tag'
-          value: '0.1.0.249-preview'
       valueFiles:
         - values-dev.yaml
-      
-
   # Destination cluster and namespace to deploy the application
   destination:
     server: https://kubernetes.default.svc
     namespace: develop
-  
   # Sync policy
   syncPolicy:
     automated: #enables auto-sync
       prune: true
-      selfHeal: false
+      selfHeal: true
 
   
+---
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: 'echo-server-node-staging'
+  namespace: argocd
+spec:
+  project: default
+  # Source of the application manifests
+  source:
+    repoURL: git@github.com:VectorLearning/poc_echo_server_node.git
+    targetRevision: HEAD
+    path: './src/helm/echo-server-node'
+    # Helm specific config
+    helm:
+      passCredentials: false
+      releaseName: staging
+      valueFiles:
+        - values-stage.yaml
+  # Destination cluster and namespace to deploy the application
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: staging
