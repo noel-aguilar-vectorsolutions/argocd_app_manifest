@@ -1,0 +1,66 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: echo-server-node-appset
+  namespace: argocd
+  # annotations:
+  #   argocd.argoproj.io/sync-wave: "0"
+  #   argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+  #   argocd.argoproj.io/compare-options: IgnoreExtraneous
+  #   argocd.argoproj.io/refresh: "1m"
+  #   argocd.argoproj.io/refresh-interval: "1m"
+  #   argocd.argoproj.io/refresh-on-sync: "true"
+  #   argocd.argoproj.io/refresh-on-commit: "true"
+  #   argocd.argoproj.io/refresh-on-push: "true"
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - list:
+      elements:
+      - cluster: core-nonprod
+        url: https://77800F04079BF0A8DE63EAEFBD26A1AB.gr7.us-east-2.eks.amazonaws.com
+        ns: develop
+        valuesFile: values-dev.yaml
+        autoSync: true
+        prune: true
+        selfHeal: true
+      - cluster: core-nonprod
+        url: https://77800F04079BF0A8DE63EAEFBD26A1AB.gr7.us-east-2.eks.amazonaws.com
+        ns: staging
+        valuesFile: values-stage.yaml
+        autoSync: false
+        prune: true
+        selfHeal: false
+  template: # used to generate Argo CD Application resources
+    metadata:
+      name: '{{.ns}}-echo-server-node'
+      namespace: argocd
+    spec:
+      project: default
+      # Source of the application manifests
+      source:
+        repoURL: https://github.com/VectorLearning/poc_echo_server_node.git
+        targetRevision: HEAD
+        path: ./src/helm/echo-server-node
+        # Helm specific config
+        helm:
+          passCredentials: false
+          releaseName: '{{.ns}}'
+          valueFiles:
+          - '{{.valuesFile}}'
+      # Destination cluster and namespace to deploy the application
+      destination:
+        server: '{{.url}}'
+        namespace: '{{.ns}}'
+  templatePatch: |
+    spec:
+      {{- if .autoSync }}
+        # Sync policy
+        syncPolicy:
+          automated: # enables auto-sync
+            prune: {{ .prune }}
+            selfHeal: {{ .selfHeal }}
+      {{- else }}
+        syncPolicy: null
+      {{- end }}
