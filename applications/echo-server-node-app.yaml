@@ -8,8 +8,8 @@ spec:
   project: default
   # Source of the application manifests
   source:
-    repoURL: git@github.com:VectorLearning/poc_echo_server_node.git
-    targetRevision: main
+    repoURL: https://github.com/VectorLearning/poc_echo_server_node.git
+    targetRevision: HEAD
     path: './src/helm/echo-server-node'
     # Helm specific config
     helm:
@@ -19,7 +19,7 @@ spec:
         - values-dev.yaml
   # Destination cluster and namespace to deploy the application
   destination:
-    server: https://kubernetes.default.svc
+    server: https://77800F04079BF0A8DE63EAEFBD26A1AB.gr7.us-east-2.eks.amazonaws.com
     namespace: develop
   # Sync policy
   syncPolicy:
@@ -39,7 +39,7 @@ spec:
   project: default
   # Source of the application manifests
   source:
-    repoURL: git@github.com:VectorLearning/poc_echo_server_node.git
+    repoURL: https://github.com/VectorLearning/poc_echo_server_node.git
     targetRevision: HEAD
     path: './src/helm/echo-server-node'
     # Helm specific config
@@ -50,5 +50,5 @@ spec:
         - values-stage.yaml
   # Destination cluster and namespace to deploy the application
   destination:
-    server: https://kubernetes.default.svc
+    server: https://77800F04079BF0A8DE63EAEFBD26A1AB.gr7.us-east-2.eks.amazonaws.com
     namespace: staging
