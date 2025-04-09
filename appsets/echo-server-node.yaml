@@ -53,14 +53,17 @@ spec:
       destination:
         server: '{{.url}}'
         namespace: '{{.ns}}'
+      
   templatePatch: |
     spec:
-      {{- if .autoSync }}
-        # Sync policy
-        syncPolicy:
-          automated: # enables auto-sync
-            prune: {{ .prune }}
-            selfHeal: {{ .selfHeal }}
-      {{- else }}
-        syncPolicy: null
-      {{- end }}
+      # Sync policy
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=false
+        {{- if .autoSync }}
+        automated: # enables auto-sync
+          prune: {{ .prune }}
+          selfHeal: {{ .selfHeal }}
+        {{- else }}
+        automated: null
+        {{- end }}
