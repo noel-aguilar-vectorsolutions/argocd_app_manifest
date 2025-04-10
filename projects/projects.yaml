@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: poc
+  namespace: argocd
+spec:
+  description: POC Project
+  sourceRepos:
+  - '*'
+  destinations:
+  - name: core-nonprod
+    namespace: staging
+  - name: core-nonprod
+    namespace: develop
+  - name: core-nonprod
+    namespace: test1
+  - name: core-nonprod
+    namespace: test2
+  orphanedResources:
+    warn: false
