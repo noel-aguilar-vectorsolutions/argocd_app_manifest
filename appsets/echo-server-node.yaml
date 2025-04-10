@@ -37,7 +37,7 @@ spec:
       name: '{{.ns}}-echo-server-node'
       namespace: argocd
     spec:
-      project: default
+      project: poc
       # Source of the application manifests
       source:
         repoURL: https://github.com/VectorLearning/poc_echo_server_node.git
