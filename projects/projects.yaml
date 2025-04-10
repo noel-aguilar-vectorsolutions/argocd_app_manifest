@@ -8,13 +8,16 @@ spec:
   sourceRepos:
   - '*'
   destinations:
-  - name: core-nonprod
+  - server: https://77800F04079BF0A8DE63EAEFBD26A1AB.gr7.us-east-2.eks.amazonaws.com
     namespace: staging
-  - name: core-nonprod
+  - server: https://77800F04079BF0A8DE63EAEFBD26A1AB.gr7.us-east-2.eks.amazonaws.com
     namespace: develop
   - name: core-nonprod
     namespace: test1
   - name: core-nonprod
     namespace: test2
+  sourceNamespaces:
+  - staging
+  - develop
   orphanedResources:
     warn: false
