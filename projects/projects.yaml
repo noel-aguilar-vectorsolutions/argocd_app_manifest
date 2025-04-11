@@ -1,3 +1,4 @@
+# https://argo-cd.readthedocs.io/en/stable/operator-manual/project-specification/
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
@@ -8,16 +9,13 @@ spec:
   sourceRepos:
   - '*'
   destinations:
-  - server: https://77800F04079BF0A8DE63EAEFBD26A1AB.gr7.us-east-2.eks.amazonaws.com
+  - name: core-nonprod
     namespace: staging
-  - server: https://77800F04079BF0A8DE63EAEFBD26A1AB.gr7.us-east-2.eks.amazonaws.com
+  - name: core-nonprod
     namespace: develop
   - name: core-nonprod
     namespace: test1
   - name: core-nonprod
     namespace: test2
-  sourceNamespaces:
-  - staging
-  - develop
   orphanedResources:
     warn: false
