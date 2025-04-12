@@ -17,13 +17,15 @@ spec:
       passCredentials: false
       releaseName: develop
       valueFiles:
-        - values-dev.yaml
+        - values-develop.yaml
   # Destination cluster and namespace to deploy the application
   destination:
-    server: https://77800F04079BF0A8DE63EAEFBD26A1AB.gr7.us-east-2.eks.amazonaws.com
+    name: in-cluster
     namespace: develop
   # Sync policy
   syncPolicy:
+    syncOptions:
+    - CreateNamespace=false
     automated: #enables auto-sync
       prune: true
       selfHeal: true
@@ -48,8 +50,13 @@ spec:
       passCredentials: false
       releaseName: staging
       valueFiles:
-        - values-stage.yaml
+        - values-staging.yaml
   # Destination cluster and namespace to deploy the application
   destination:
-    server: https://77800F04079BF0A8DE63EAEFBD26A1AB.gr7.us-east-2.eks.amazonaws.com
+    name: in-cluster
     namespace: staging
+  # Sync policy
+  syncPolicy: 
+    syncOptions:
+    - CreateNamespace=false
+
